@@ -3,7 +3,20 @@ import datetime as dt
 from flask_restful import Resource, abort
 import pandas as pd
 import snowflake_connection
-import helpers
+
+
+class APIKey():
+    """A class that checks a passed API key against a stored static key"""
+    def __init__(self, passed_key):
+        """Intializes the class object with two attributes: a stored static_key and a passed passed_key"""
+        self.static_key = '732N4FW9JQW99MD'
+        self.passed_key = passed_key
+    
+    def check_key(self):
+        """Checks if the passed_key and static_key attributes match and aborts if not"""
+        if self.passed_key != self.static_key:
+            abort(401, message="unauthorized: invalid API key")
+
 
 class AllLogs(Resource):
     """Endpoint for API actions that affect all logs: get all logs and post new log"""
@@ -13,7 +26,7 @@ class AllLogs(Resource):
 
     def get(self, api_key):
         """Returns only standard (invariant) data for all logs"""
-        helpers.check_api_key(api_key)
+        APIKey(api_key).check_key()
 
         self.SnowflakeConnector.open_connection()
         self.SnowflakeConnector.pull_table('LOG', 'LOGS')
@@ -24,7 +37,7 @@ class AllLogs(Resource):
 
     def post(self, api_key):
         """Posts new event to database and returns dictionary contains new event"""
-        helpers.check_api_key(api_key)
+        APIKey(api_key).check_key()
         self.SnowflakeConnector.open_connection()
 
         # "date" field is populated using datetime.now().date() instead of date.today() so as to avoid timezone confusion
@@ -62,7 +75,7 @@ class Log(Resource):
 
     def get(self, api_key, event_id):
         """Returns all data for log specified by event_id"""
-        helpers.check_api_key(api_key)
+        APIKey(api_key).check_key()
 
         self.SnowflakeConnector.open_connection()
         data = self.SnowflakeConnector.pull_records(invar_conditions={"EVENT_ID": event_id})
@@ -79,7 +92,7 @@ class QueryLogs(Resource):
 
     def get(self, api_key):
         """Returns all data for logs that meet query conditions or blank dictionary if no logs meet conditions"""
-        helpers.check_api_key(api_key)
+        APIKey(api_key).check_key()
 
         # opens and closes a Snowflake connection to pull existing columns to avoid leaving hanging connection in case of abort
         self.SnowflakeConnector.open_connection()
