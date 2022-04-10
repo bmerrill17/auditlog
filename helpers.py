@@ -1,7 +1,4 @@
-from flask import Flask, request, jsonify
-import datetime as dt
-from flask_restful import Resource, Api, reqparse, abort
-import pandas as pd
+from flask_restful import abort
 import cons
 
 
