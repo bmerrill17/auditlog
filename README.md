@@ -113,7 +113,7 @@ Return dictionary if no relevant POSTs yet submitted:
 To post a new event:
 
 ```
-curl -d "source=Salesforce&log_text=customer billed for Ubuntu Advantage&event_type=customer billed&customer_id=34653&&bill_amount=1999.99" localhost:5000/logs/732N4FW9JQW99MD
+curl -d "source=Salesforce&log_text=customer billed for Ubuntu Advantage&event_type=customer billed&customer_id=74851&&bill_amount=1999.99" localhost:5000/logs/732N4FW9JQW99MD
 ```
 
 Returns a 200 status code and a dictionary containing the new data. Return dictionary:
@@ -121,5 +121,5 @@ Returns a 200 status code and a dictionary containing the new data. Return dicti
 ```
 {"added log": {"date": {"0": "2022-04-11"}, "time": {"0": "02:08:40.637618"}, "event_id": {"0": 7},
 "source": {"0": "Salesforce"}, "log_text": {"0": "customer billed for Ubuntu Advantage"}, "event_type": {"0": "customer billed"},
-"customer_id": {"0": "34653"}, "bill_amount": {"0": "1999.99"}}}
+"customer_id": {"0": "74851"}, "bill_amount": {"0": "1999.99"}}}
 ```
