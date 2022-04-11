@@ -93,15 +93,24 @@ class SnowflakeConnector:
             data = pd.read_sql('SELECT * FROM AUDITLOG.LOG.LOGS', self.connection)
 
         # if the query imposes conditions on any relevant (not already filtered-out) variant fields, filter selection
-        # further and merge in variant fields using right-merge
+        # further by adding positively filtered event_id to var_selected_ids concat/groupby process as above to merge in variant fields
+        # because of potentially additively-filtering in multiple steps of for-loop, actual filtration done after loop ends
         if var_conditions:
+            invar_selected_ids = data["event_id"].values.tolist()
+            var_selected_ids = []
             for event_type in set(data["event_type"].values):
                 if event_type in sqlalchemy.inspect(self.engine).get_table_names():
                     relevant_conditions = {key: var_conditions[key] for key in [col for col in self.pull_columns(event_type) if col in var_conditions]}
                     if relevant_conditions:
                         var_data = pd.read_sql('SELECT * FROM AUDITLOG.LOG."{}" WHERE '.format(event_type) + ''.join(
                             '"%s" = \'%s\' AND ' % pair for pair in relevant_conditions.items())[:-4], self.connection)
-                        data = pd.merge(data, var_data, how='right', on=["event_id"])
+                        # data = pd.merge(data, var_data[["event_id"]], how='right', on=["event_id"])
+                        var_selected_ids += var_data["event_id"].values.tolist()
+                        data = pd.concat((data, var_data), sort=False).groupby("event_id").first().reset_index()
+                        print('after')
+                        print(data)
+            selected_ids = [col for col in var_selected_ids if col in invar_selected_ids]
+            data = data[data["event_id"].isin(selected_ids)]
         return data
 
     def __getitem__(self, key):

@@ -13,4 +13,4 @@ if __name__ == '__main__':
     api.add_resource(endpoints.QueryLogs, '/logs/<string:api_key>/query')
 
     # runs the API
-    app.run()
+    app.run(host='0.0.0.0')

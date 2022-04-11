@@ -4,20 +4,6 @@ from flask_restful import Resource, abort
 import pandas as pd
 import snowflake_connection
 
-
-class APIKey():
-    """A class that checks a passed API key against a stored static key"""
-    def __init__(self, passed_key):
-        """Intializes the class object with two attributes: a stored static_key and a passed passed_key"""
-        self.static_key = '732N4FW9JQW99MD'
-        self.passed_key = passed_key
-    
-    def check_key(self):
-        """Checks if the passed_key and static_key attributes match and aborts if not"""
-        if self.passed_key != self.static_key:
-            abort(401, message="unauthorized: invalid API key")
-
-
 class AllLogs(Resource):
     """Endpoint for API actions that affect all logs: get all logs and post new log"""
     def __init__(self):
@@ -120,3 +106,17 @@ class QueryLogs(Resource):
 
         data = data.to_dict()
         return {'data': data}, 200
+
+
+# TODO: implement a more advanced authentication system
+class APIKey:
+    """A class that checks a passed API key against a stored static key"""
+    def __init__(self, passed_key):
+        """Intializes the class object with two attributes: a stored static_key and a passed passed_key"""
+        self.static_key = '732N4FW9JQW99MD'
+        self.passed_key = passed_key
+
+    def check_key(self):
+        """Checks if the passed_key and static_key attributes match and aborts if not"""
+        if self.passed_key != self.static_key:
+            abort(401, message="unauthorized: invalid API key")
