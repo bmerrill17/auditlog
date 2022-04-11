@@ -31,7 +31,9 @@ class AllLogs(Resource):
                     "time": str(dt.datetime.now(dt.timezone.utc).time()),
                     "event_id": self.SnowflakeConnector.check_max_id('LOGS') + 1}
 
-        for key, value in request.args.items():
+        print(request.form)
+
+        for key, value in request.form.items():
             new_data[key] = value
 
         # checks to make sure all required fields are provided in the POST request
