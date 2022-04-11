@@ -67,13 +67,7 @@ curl "localhost:5000/logs/732N4FW9JQW99MD"
 
 Returns a 200 status code and a dictionary containing standard data for all logs in the database. Return dictionary if no POSTs yet submitted:
 ```
-{"data": {"event_id": {"0": 1, "1": 2, "2": 3, "3": 4, "4": 5, "5": 6}, "date": {"0": "2022-04-10", "1": "2022-04-10",
-"2": "2022-04-10", "3": "2022-04-10", "4": "2022-04-10", "5": "2022-04-11"}, "time": {"0": "19:38:15.289146",
-"1": "19:38:30.870430", "2": "19:38:37.472618", "3": "21:03:22.113793", "4": "21:09:56.030534", "5": "00:18:47.474154"},
-"source": {"0": "Salesforce", "1": "Salesforce", "2": "serverlog", "3": "Salesforce", "4": "Manual entry", "5": "Salesforce"},
-"event_type": {"0": "customer billed", "1": "customer billed", "2": "server crash", "3": "customer added", "4": "customer added",
-"5": "customer billed"}, "log_text": {"0": "customer billed for Ubuntu Advantage", "1": "customer billed for Ubuntu Advantage Plus",
-"2": "interal server 454 crashed", "3": "customer 7563 added", "4": "customer 8673 added", "5": "customer billed for Ubuntu Advantage"}}}
+{"data": {"event_id": {"0": 1, "1": 2, "2": 3, "3": 4}, "date": {"0": "2022-04-11", "1": "2022-04-11", "2": "2022-04-11", "3": "2022-04-11"}, "time": {"0": "03:03:57.516757", "1": "03:06:39.374290", "2": "03:07:25.419086", "3": "03:08:22.498176"}, "source": {"0": "Salesforce", "1": "Salesforce", "2": "Salesforce", "3": "Server log"}, "event_type": {"0": "customer billed", "1": "added", "2": "customer billed", "3": "server crash"}, "log_text": {"0": "customer billed for Ubuntu Advantage", "1": "customer 7777 added", "2": "customer billed for Ubuntu Advantage", "3": "server 9476 crashed"}}}
 ```
 <br>
 
@@ -85,9 +79,7 @@ curl "localhost:5000/logs/732N4FW9JQW99MD/1"
 
 Returns a 200 status code and a dictionary containing all data for the log with passed event_id. Return dicitonary:
 ```
-{"data": {"event_id": {"0": 1}, "date": {"0": "2022-04-10"}, "time": {"0": "19:38:15.289146"}, "source":
-{"0": "Salesforce"}, "event_type": {"0": "customer billed"}, "log_text": {"0": "customer billed for Ubuntu Advantage"},
-"customer_id": {"0": "83674"}, "bill_amount": {"0": "1999.99"}}}
+{"data": {"event_id": {"0": 1}, "date": {"0": "2022-04-11"}, "time": {"0": "03:03:57.516757"}, "source": {"0": "Salesforce"}, "event_type": {"0": "customer billed"}, "log_text": {"0": "customer billed for Ubuntu Advantage"}, "customer_id": {"0": "74851"}, "bill_amount": {"0": "1999.99"}}}
 ```
 
 <br>
@@ -96,16 +88,14 @@ To query the record logs based on some parameters, which can be invariant or var
 source=Salesforce):
 
 ```
-curl "localhost:5000/logs/732N4FW9JQW99MD/query?customer_id=8673&source=Salesforce"
+curl "localhost:5000/logs/732N4FW9JQW99MD/query?customer_id=7777&source=Salesforce"
 ```
 
 Returns a 200 status code and a dictionary containing all data for the logs that meet the specified parameters.
 Return dictionary if no relevant POSTs yet submitted:
 
 ```
-{"data": {"event_id": {"4": 6}, "date": {"4": "2022-04-11"}, "time": {"4": "00:18:47.474154"}, "source":
-{"4": "Salesforce"}, "event_type": {"4": "customer billed"}, "log_text": {"4": "customer billed for Ubuntu Advantage"},
-"customer_id": {"4": "8673"}, "bill_amount": {"4": "1999.99"}}}
+{"data": {"event_id": {"2": 3}, "date": {"2": "2022-04-11"}, "time": {"2": "03:07:25.419086"}, "source": {"2": "Salesforce"}, "event_type": {"2": "customer billed"}, "log_text": {"2": "customer billed for Ubuntu Advantage"}, "customer_id": {"2": "7777"}, "bill_amount": {"2": "1999.99"}}}
 ```
 
 <br>
@@ -113,13 +103,13 @@ Return dictionary if no relevant POSTs yet submitted:
 To post a new event:
 
 ```
-curl -d "source=Salesforce&log_text=customer billed for Ubuntu Advantage&event_type=customer billed&customer_id=74851&&bill_amount=1999.99" localhost:5000/logs/732N4FW9JQW99MD
+curl -d "source=Salesforce&log_text=customer billed for Ubuntu Advantage&event_type=customer billed&customer_id=8888&bill_amount=1999.99" localhost:5000/logs/732N4FW9JQW99MD
 ```
 
 Returns a 200 status code and a dictionary containing the new data. Return dictionary:
 
 ```
-{"added log": {"date": {"0": "2022-04-11"}, "time": {"0": "02:08:40.637618"}, "event_id": {"0": 7},
+{"added log": {"date": {"0": "2022-04-11"}, "time": {"0": "02:08:40.637618"}, "event_id": {"0": 5},
 "source": {"0": "Salesforce"}, "log_text": {"0": "customer billed for Ubuntu Advantage"}, "event_type": {"0": "customer billed"},
-"customer_id": {"0": "74851"}, "bill_amount": {"0": "1999.99"}}}
+"customer_id": {"0": "8888"}, "bill_amount": {"0": "1999.99"}}}
 ```
