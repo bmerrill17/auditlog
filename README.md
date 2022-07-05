@@ -1,6 +1,6 @@
 # Audit Logger Demo
 
-This demo microservice allows users to interact with a RESTful API in order to submit, query, and audit events of any nature.
+This demo microservice allows users to interact with a RESTful API in order to submit, query, and audit events of any nature. I have developed and tested it to act as a portfolio demo and to get practice creating APIs.
 
 The microservice is written in python, uses a Snowflake database as a data storage solution, and is deployable through Docker.
 
@@ -9,7 +9,7 @@ the most common case presented to the service. To this end, I chose to implement
 invariant data (required for all events logged), and an additional table for each event type that has 1+ variant (non-standard)
 field.
 
-In accordance with the instruction to make minimal use of other's code, I have not used a more all-in-one API solution
+As this project is primarily a demo of my development skills, I have not used a more all-in-one API solution
 (such as one available through Django). However, in the interest of practicality and time-efficiency, I have used elements
 of some frameworks (below) in the development of this microservice.
 
